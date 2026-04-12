@@ -1,0 +1,13 @@
+{
+  "name": "jules-playground",
+  "version": "1.0.0",
+  "description": "Playground repository for testing Jules AI agent capabilities",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
