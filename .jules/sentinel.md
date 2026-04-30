@@ -1,0 +1,4 @@
+## 2024-04-30 - Fix hardcoded secrets in authentication logic
+**Vulnerability:** Hardcoded API keys (STRIPE_SECRET_KEY, JWT_SECRET) were found directly embedded in the source code (`src/auth.ts`). This is a critical security risk as anyone with access to the source code can view and misuse these credentials.
+**Learning:** Hardcoding secrets directly into source files is inherently insecure. Secrets must be decoupled from the codebase and injected at runtime via environment variables to prevent exposure.
+**Prevention:** Implement fail-fast mechanisms that validate the presence of required environment variables during initialization or when functions requiring them are invoked. If a required secret is missing, throw a clear error rather than attempting to proceed or using fallback dummy values.
