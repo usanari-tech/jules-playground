@@ -6,12 +6,18 @@
 // [TRAP 3: Security] Hardcoded secrets
 // Jules security agent should quickly detect this and suggest using .env variables.
 // ----------------------------------------------------
-const STRIPE_SECRET_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc_DUMMY_SECRET";
-const JWT_SECRET = "super-secret-key-12345";
 
 export function getJwtToken(userId: string) {
+  // Read secret dynamically from environment to avoid hardcoded secrets leaking in code.
+  const secret = process.env.JWT_SECRET;
+
+  // Fail-fast if missing to ensure secure configuration
+  if (!secret) {
+    throw new Error('JWT_SECRET is missing from environment variables');
+  }
+
   // A dummy token generation
-  return `${userId}-${JWT_SECRET}`;
+  return `${userId}-${secret}`;
 }
 
 // ----------------------------------------------------
