@@ -2,16 +2,22 @@
 // Jules Playground: Security Test
 // ==========================================
 
+declare var process: any;
+
 // ----------------------------------------------------
 // [TRAP 3: Security] Hardcoded secrets
 // Jules security agent should quickly detect this and suggest using .env variables.
 // ----------------------------------------------------
-const STRIPE_SECRET_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc_DUMMY_SECRET";
-const JWT_SECRET = "super-secret-key-12345";
+// SECURITY FIX: Removed hardcoded secrets to prevent exposing sensitive keys in version control.
+// Secrets should be loaded from environment variables.
 
 export function getJwtToken(userId: string) {
   // A dummy token generation
-  return `${userId}-${JWT_SECRET}`;
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET environment variable is missing");
+  }
+  return `${userId}-${secret}`;
 }
 
 // ----------------------------------------------------
