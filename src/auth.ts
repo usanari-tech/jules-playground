@@ -6,12 +6,15 @@
 // [TRAP 3: Security] Hardcoded secrets
 // Jules security agent should quickly detect this and suggest using .env variables.
 // ----------------------------------------------------
-const STRIPE_SECRET_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc_DUMMY_SECRET";
-const JWT_SECRET = "super-secret-key-12345";
 
 export function getJwtToken(userId: string) {
-  // A dummy token generation
-  return `${userId}-${JWT_SECRET}`;
+  // Security Fix: Reading JWT_SECRET from environment variables to avoid hardcoded secrets.
+  // @ts-ignore - env property is not typed in this basic TS setup
+  const jwtSecret = import.meta.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error("JWT_SECRET is not defined in environment variables");
+  }
+  return `${userId}-${jwtSecret}`;
 }
 
 // ----------------------------------------------------
