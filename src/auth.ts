@@ -21,13 +21,13 @@ export function getJwtToken(userId: string) {
 export function findUserByUsernameRawQuery(username: string) {
   // This is a fake database connection simulating a raw query that is vulnerable
   const dummyDbConnection = {
-    query: (q: string) => { console.log(`Executing: ${q}`); return []; }
+    query: (q: string, params?: any[]) => { console.log(`Executing: ${q} with params:`, params); return []; }
   };
 
-  // VULNERABLE: Direct string concatenation
-  const sql = "SELECT * FROM users WHERE username = '" + username + "'";
+  // SECURE: Use parameterized query to prevent SQL injection
+  const sql = "SELECT * FROM users WHERE username = ?";
   
-  return dummyDbConnection.query(sql);
+  return dummyDbConnection.query(sql, [username]);
 }
 
 // TODO: implement proper secure authentication flow
